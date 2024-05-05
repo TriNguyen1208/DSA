@@ -4,7 +4,6 @@
 #include<set>
 using namespace std;
 
-//Hello
 string Sum(string x1, string x2)
 {
 	string res = "";
@@ -60,35 +59,20 @@ void toLower(string& s)
 
 int main()
 {
-	string s1; getline(cin, s1);
-	string s2; getline(cin, s2);
-
-	int cnt1[256] = { 0 }, cnt2[256] = { 0 };
-	//line 2
-	set<char>se;
-	for (int i = 0; i < s1.length(); i++)
+	string s;
+	getline(cin, s);
+	int cnt[26] = { 0 };
+	for (int i = 0; i < s.length(); i++)
 	{
-		se.insert(s1[i]);
-		cnt1[s1[i]] = 1;
+		cnt[s[i] - 'a'] = 1;
 	}
-	for (int i = 0; i < s2.length(); i++)
+	for (int i = 0; i < 26; i++)
 	{
-		se.insert(s2[i]);
-		cnt2[s2[i]] = 1;
-	}
-	//line 1
-	for (int i = 0; i < 256; i++)
-	{
-		if (cnt1[i] == 1 && cnt2[i] == 1)
+		if (cnt[i] == 0)
 		{
-			cout << (char)i;
+			cout << "NO";
+			return 0;
 		}
 	}
-	cout << endl;
-	for (set<char>::iterator it = se.begin(); it != se.end(); it++)
-	{
-		cout << *it;
-	}
+	cout << "YES";
 }
-//nTOhOGvRBk
-//bUJtZSoONh
