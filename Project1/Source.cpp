@@ -121,9 +121,33 @@ int main()
 {
 	string name;
 	getline(cin, name);
-	string dob;
-	getline(cin, dob);
 	name = ChangeUpperName(name);
-	dob = ChangeDayOfBirth(dob);
-	cout << name << endl << dob;
+	stringstream ss(name);
+	string word;
+	vector<string>v;
+	while (ss >> word)
+	{
+		v.push_back(word);
+	}
+	for (int i = 0; i < v.size() - 1; i++)
+	{
+		v[i][0] = toupper(v[i][0]);
+	}
+	for (int i = 0; i < v[v.size() - 1].length(); i++)
+	{
+		v[v.size() - 1][i] = toupper(v[v.size() - 1][i]);
+	}
+	//1
+	for (int i = 0; i < v.size() - 1; i++)
+	{
+		cout << v[i] << " ";
+	}
+	cout << ", " << v[v.size() - 1] << endl;
+
+	//2
+	cout << v[v.size() - 1] << ", ";
+	for (int i = 0; i < v.size() - 1; i++)
+	{
+		cout << v[i] << " ";
+	}
 }
