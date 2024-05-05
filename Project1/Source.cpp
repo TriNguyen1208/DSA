@@ -5,6 +5,7 @@
 #include<sstream>
 #include<vector>
 #include<algorithm>
+#include<map>
 using namespace std;
 
 string Sum(string x1, string x2)
@@ -80,23 +81,49 @@ bool checkSymmetry(string word)
 	}
 	return true;
 }
-int main()
+string ChangeUpperName(string name)
 {
-	string s;
-	getline(cin, s);
-	vector<pair<string, int>>v;
-	stringstream ss(s);
+	string res = "";
+	stringstream ss(name);
 	string word;
 	while (ss >> word)
 	{
-		if (checkSymmetry(word) == true)
+		word[0] = toupper(word[0]);
+		for (int i = 1; i < word.length(); i++)
 		{
-			v.push_back({ word, word.length() });
+			word[i] = tolower(word[i]);
+		}
+		res = res + word + " ";
+	}
+	res.pop_back();
+	return res;
+}
+string ChangeDayOfBirth(string dob)
+{
+	string res = "";
+	stringstream ss(dob);
+	string word;
+	while (getline(ss, word, '/'))
+	{
+		if (word.length() > 1)
+		{
+			res = res + word + "/";
+		}
+		else
+		{
+			res = res + "0" + word + "/";
 		}
 	}
-	stable_sort(v.begin(), v.end(), cmp);
-	for (int i = 0; i < v.size(); i++)
-	{
-		cout << v[i].first << " ";
-	}
+	res.pop_back();
+	return res;
+}
+int main()
+{
+	string name;
+	getline(cin, name);
+	string dob;
+	getline(cin, dob);
+	name = ChangeUpperName(name);
+	dob = ChangeDayOfBirth(dob);
+	cout << name << endl << dob;
 }
