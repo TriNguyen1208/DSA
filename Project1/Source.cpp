@@ -3,6 +3,8 @@
 #include<string.h>
 #include<set>
 #include<sstream>
+#include<vector>
+#include<algorithm>
 using namespace std;
 
 string Sum(string x1, string x2)
@@ -57,31 +59,32 @@ void toLower(string& s)
 		s[i] = tolower(s[i]);
 	}
 }
-
+bool cmp(pair<string, int>s1, pair<string, int>s2)
+{
+	if (s1.first <= s2.first)
+	{
+		return true;
+	}
+	return false;
+}
 int main()
 {
 	string s;
 	getline(cin, s);
-	set<string>se;
+	vector<pair<string, int>>v;
 	stringstream ss(s);
 	string word;
-	while (ss >> word)
+	while(ss >> word)
 	{
-		se.insert(word);
+		v.push_back({word, word.length()});
 	}
-	for (set<string>::iterator it = se.begin(); it != se.end(); it++)
+	for (int i = 0; i < v.size(); i++)
 	{
-		cout << *it << " ";
+		cout << v[i].first << " ";
 	}
-	cout << endl;
-	stringstream token(s);
-	string tmp;
-	while (token >> tmp)
+	sort(v.begin(), v.end(), cmp);
+	for (int i = 0; i < v.size(); i++)
 	{
-		if (se.find(tmp) != se.end())
-		{
-			cout << tmp << " ";
-		}
-		se.erase(tmp);
+		cout << v[i].first << " ";
 	}
 }
