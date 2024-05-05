@@ -34,11 +34,23 @@ int main()
 	{
 		t.insert(word);
 	}
+	set<string>total;
 	for (set<string>::iterator it = s.begin(); it != s.end(); it++)
 	{
-		if (t.find(*it) != t.end())
+		if (t.find(*it) == t.end())
 		{
-			cout << *it << " ";
+			total.insert(*it);
 		}
+	}
+	for (set<string>::iterator it = t.begin(); it != t.end(); it++)
+	{
+		if (t.find(*it) == t.end())
+		{
+			total.insert(*it);
+		}
+	}
+	for (auto it = total.begin(); it != total.end(); it++)
+	{
+		cout << *it << " ";
 	}
 }
