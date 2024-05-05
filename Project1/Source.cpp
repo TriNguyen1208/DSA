@@ -61,11 +61,24 @@ void toLower(string& s)
 }
 bool cmp(pair<string, int>s1, pair<string, int>s2)
 {
-	if (s1.first <= s2.first)
+	if (s1.second < s2.second)
 	{
 		return true;
 	}
 	return false;
+}
+bool checkSymmetry(string word)
+{
+	int l = 0, r = word.length() - 1;
+	while (l <= r)
+	{
+		if (word[l] != word[r])
+		{
+			return false;
+		}
+		l++, r--;
+	}
+	return true;
 }
 int main()
 {
@@ -74,15 +87,14 @@ int main()
 	vector<pair<string, int>>v;
 	stringstream ss(s);
 	string word;
-	while(ss >> word)
+	while (ss >> word)
 	{
-		v.push_back({word, word.length()});
+		if (checkSymmetry(word) == true)
+		{
+			v.push_back({ word, word.length() });
+		}
 	}
-	for (int i = 0; i < v.size(); i++)
-	{
-		cout << v[i].first << " ";
-	}
-	sort(v.begin(), v.end(), cmp);
+	stable_sort(v.begin(), v.end(), cmp);
 	for (int i = 0; i < v.size(); i++)
 	{
 		cout << v[i].first << " ";
