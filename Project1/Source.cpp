@@ -4,6 +4,7 @@
 #include<vector>
 #include<set>
 #include<sstream>
+#include<algorithm>
 using namespace std;
 
 void ChangeToLower(string& word)
@@ -13,44 +14,26 @@ void ChangeToLower(string& word)
 		word[i] = tolower(word[i]);
 	}
 }
+bool cmp(string s1, string s2)
+{
+	if (s1 < s2)
+	{
+		return false;
+	}
+	return true;
+}
 int main()
 {
-	string S;
-	getline(cin, S);
-	string T;
-	getline(cin, T);
-	ChangeToLower(S);
-	ChangeToLower(T);
-	set<string>s;
-	set<string>t;
-	stringstream ss(S);
-	stringstream st(T);
-	string word;
-	while (ss >> word)
+	int n; cin >> n;
+	vector<string>v;
+	for (int i = 0; i < n; i++)
 	{
-		s.insert(word);
+		string tmp; cin >> tmp;
+		v.push_back(tmp);
 	}
-	while (st >> word)
+	sort(v.begin(), v.end(), cmp);
+	for (int i = 0; i < v.size(); i++)
 	{
-		t.insert(word);
-	}
-	set<string>total;
-	for (set<string>::iterator it = s.begin(); it != s.end(); it++)
-	{
-		if (t.find(*it) == t.end())
-		{
-			total.insert(*it);
-		}
-	}
-	for (set<string>::iterator it = t.begin(); it != t.end(); it++)
-	{
-		if (t.find(*it) == t.end())
-		{
-			total.insert(*it);
-		}
-	}
-	for (auto it = total.begin(); it != total.end(); it++)
-	{
-		cout << *it << " ";
+		cout << v[i];
 	}
 }
