@@ -2,6 +2,7 @@
 #include<string>
 #include<string.h>
 #include<set>
+#include<sstream>
 using namespace std;
 
 string Sum(string x1, string x2)
@@ -61,19 +62,26 @@ int main()
 {
 	string s;
 	getline(cin, s);
-	int cnt[26] = { 0 };
-	for (int i = 0; i < s.length(); i++)
+	set<string>se;
+	stringstream ss(s);
+	string word;
+	while (ss >> word)
 	{
-		cnt[s[i] - 'a'] = 1;
+		se.insert(word);
 	}
-	for (int i = 0; i < 26; i++)
+	for (set<string>::iterator it = se.begin(); it != se.end(); it++)
 	{
-		if (cnt[i] == 0)
+		cout << *it << " ";
+	}
+	cout << endl;
+	stringstream token(s);
+	string tmp;
+	while (token >> tmp)
+	{
+		if (se.find(tmp) != se.end())
 		{
-			cout << "NO";
-			return 0;
+			cout << tmp << " ";
 		}
+		se.erase(tmp);
 	}
-	cout << "YES";
-	//Hello
 }
