@@ -7,33 +7,48 @@
 #include<algorithm>
 using namespace std;
 
-void ChangeToLower(string& word)
+void InputArray(int a[10][10], int& n, int& m)
 {
-	for (int i = 0; i < word.length(); i++)
+	cin >> n >> m;
+	for (int i = 0; i < n; i++)
 	{
-		word[i] = tolower(word[i]);
+		for (int j = 0; j < m; j++)
+		{
+			cin >> a[i][j];
+		}
 	}
 }
-bool cmp(string s1, string s2)
+int dx[4] = { -1, 0, 0, 1 };
+int dy[4] = { 0, -1, 1, 0 };
+void Loang(int a[10][10], int n, int m, int i, int j)
 {
-	if (s1 < s2)
+	a[i][j] = 0;
+	cout << "Di qua " << i << " " << j << endl;
+	for (int k = 0; k < 4; k++)
 	{
-		return false;
+		if (i + dx[k] >= 0 && i + dx[k] < n && j + dy[k] >= 0 && j + dy[k] < m && a[i + dx[k]][j + dy[k]] == 1)
+		{
+			Loang(a, n, m, i + dx[k], j + dy[k]);
+			a[i][j] = 1;
+		}
 	}
-	return true;
 }
 int main()
 {
-	int n; cin >> n;
-	vector<string>v;
+	int a[10][10], n, m;
+	InputArray(a, n, m);
+	int cnt = 0;
 	for (int i = 0; i < n; i++)
 	{
-		string tmp; cin >> tmp;
-		v.push_back(tmp);
+		for (int j = 0; j < m; j++)
+		{
+			if (a[i][j] == 1)
+			{
+				cnt++;
+				Loang(a, n, m, i, j);
+				cout << endl;
+			}
+		}
 	}
-	sort(v.begin(), v.end(), cmp);
-	for (int i = 0; i < v.size(); i++)
-	{
-		cout << v[i];
-	}
+	cout << endl;
 }
