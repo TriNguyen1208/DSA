@@ -7,39 +7,38 @@
 #include<algorithm>
 using namespace std;
 
-void InputArray(int a[10][10], int& n, int& m)
+void InputArray(int a[10][10], int& n, int& s, int& t, int& u, int& v)
 {
-	cin >> n >> m;
+	cin >> n >> s >> t >> u >> v;
+	s--, t--, u--, v--;
 	for (int i = 0; i < n; i++)
 	{
-		for (int j = 0; j < m; j++)
+		for (int j = 0; j < n; j++)
 		{
 			cin >> a[i][j];
 		}
 	}
 }
-
-
-
-int dx[4] = { -1, 0, 0, 1 };
-int dy[4] = { 0, -1, 1, 0 };
-void Loang(int a[10][10], int n, int m, int i, int j)
+int dx[8] = { -2, -2, -1, -1, 1, 1, 2, 2 };
+int dy[8] = { -1, 1, -2, 2, -2, 2, -1, 1 };
+void Loang(int a[10][10], int n, int s, int t)
 {
-	a[i][j] = 0;
-	for (int k = 0; k < 4; k++)
+	a[s][t] = 0;
+	for (int k = 0; k < 8; k++)
 	{
-		if (i + dx[k] >= 0 && i + dx[k] < n && j + dy[k] >= 0 && j + dy[k] < m && a[i + dx[k]][j + dy[k]] == 1)
+		int i = s + dx[k], j = t + dy[k];
+		if (i >= 0 && i < n && j >= 0 && j < n && a[i][j] == 1)
 		{
-			Loang(a, n, m, i + dx[k], j + dy[k]);
+			Loang(a, n, i, j);
 		}
 	}
 }
 int main()
 {
-	int a[10][10], n, m;
-	InputArray(a, n, m);
-	Loang(a, n, m, 0, 0);
-	if (a[2][4] == 0)
+	int a[10][10], n, s, t, u, v;
+	InputArray(a, n, s, t, u, v);
+	Loang(a, n, s, t);
+	if (a[u][v] == 0)
 	{
 		cout << "YES";
 	}
@@ -47,4 +46,5 @@ int main()
 	{
 		cout << "NO";
 	}
+	return 0;
 }
