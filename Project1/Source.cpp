@@ -1,20 +1,17 @@
 #include<iostream>
+#include<cmath>
 using namespace std;
 
 int main()
 {
+	int N, M, K;
+	cin >> N >> M >> K;
 	int mod = 1e9 + 7;
-	int N; cin >> N;
-	int a[5];
-	for (int i = 0; i < N; i++)
+	int res = 1;
+	for (int i = 0; i < M; i++)
 	{
-		cin >> a[i];
-	}
-	int res = 0;
-	for (int x : a)
-	{
-		res = res + x;
-		res %= mod;
+		res = res * N;
+		res = res % (int)pow(10, K);
 	}
 	cout << res;
 }
