@@ -1,6 +1,7 @@
 #include<iostream>
 #include<algorithm>
 #include<cmath>
+#include<set>
 using namespace std;
 
 
@@ -119,9 +120,17 @@ int lower(int a[], int left, int right, int x, int res = -1)
 }
 int main()
 {
-	int a[] = { 1, 2, 2, 4, 5, 6 };
-	auto it = upper_bound(a, a + 6, 3);
-	cout << it - a;
+	int a[] = { 1, 1, 2, 2, 3, 3, 4, 4, 4, 6, 7 };
+	int k = 5;
+	int cnt = 0;
+	int n = sizeof(a) / sizeof(a[0]);
+	for (int i = 0; i < n; i++)
+	{
+		auto it1 = lower_bound(a + i + 1, a + n, k - a[i]);
+		auto it2 = upper_bound(a + i + 1, a + n, k - a[i]);
+		cnt = cnt + it2 - it1;
+	}
+	cout << cnt;
 }
 //5
 //534 7 669 826 610
