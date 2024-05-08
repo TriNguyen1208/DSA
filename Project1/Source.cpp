@@ -1,19 +1,127 @@
 #include<iostream>
+#include<algorithm>
 #include<cmath>
 using namespace std;
 
+
+long long binPow(long long a, long long b, long long c)
+{
+	if (b == 0)
+	{
+		return 1;
+	}
+	long long res = binPow(a, b / 2, c);
+	if (b % 2 == 0)
+	{
+		return ((res % c) * (res % c)) % c;
+	}
+	else if (b % 2 == 1)
+	{
+		return ((res % c) * (res % c) * a) % c;
+	}
+}
+bool binarySearch(int a[], int N, int x)
+{
+	int left = 0, right = N - 1;
+	while (left <= right)
+	{
+		int mid = (right + left) / 2;
+		if (a[mid] == x)
+		{
+			return true;
+		}
+		else if (a[mid] < x) // find out on the right of middle
+		{
+			left = mid + 1;
+		}
+		else
+		{
+			right = mid - 1;
+		}
+	}
+	return false;
+}
+bool binarySearchRecursion(int a[], int left, int right, int x)
+{
+	if (left > right)
+	{
+		return false;
+	}
+	int mid = (left + right) / 2;
+	if (a[mid] < x)
+	{
+		return binarySearchRecursion(a, mid + 1, right, x);
+	}
+	else if (a[mid] > x)
+	{
+		return binarySearchRecursion(a, left, mid - 1, x);
+	}
+	else
+	{
+		return true;
+	}
+}
+int firstPos(int a[], int left, int right, int x, int res = -1)
+{
+	if (left > right)
+	{
+		return res;
+	}
+	int mid = (left + right) / 2;
+	if (a[mid] < x)
+	{
+		return firstPos(a, mid + 1, right, x, res);
+	}
+	else if (a[mid] > x)
+	{
+		return firstPos(a, left, mid - 1, x, res);
+	}
+	else
+	{
+		return firstPos(a, left, mid - 1, x, mid);
+	}
+}
+int lastPos(int a[], int left, int right, int x, int res = -1)
+{
+	if (left > right)
+	{
+		return res;
+	}
+	int mid = (left + right) / 2;
+	if (a[mid] < x)
+	{
+		return lastPos(a, mid + 1, right, x, res);
+	}
+	else if (a[mid] > x)
+	{
+		return lastPos(a, left, mid - 1, x, res);
+	}
+	else
+	{
+		return lastPos(a, mid + 1, right, x, mid);
+	}
+}
+int lower(int a[], int left, int right, int x, int res = -1)
+{
+	if (left > right)
+	{
+		return res;
+	}
+	int mid = (left + right) / 2;
+	if (a[mid] < x)
+	{
+		return lower(a, mid + 1, right, x, res);
+	}
+	else if (a[mid] >= x)
+	{
+		return lower(a, left, mid - 1, x, mid);
+	}
+}
 int main()
 {
-	int N, M, K;
-	cin >> N >> M >> K;
-	int mod = 1e9 + 7;
-	int res = 1;
-	for (int i = 0; i < M; i++)
-	{
-		res = res * N;
-		res = res % (int)pow(10, K);
-	}
-	cout << res;
+	int a[] = { 1, 2, 2, 4, 5, 6 };
+	auto it = upper_bound(a, a + 6, 3);
+	cout << it - a;
 }
 //5
 //534 7 669 826 610
