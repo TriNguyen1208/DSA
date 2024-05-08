@@ -6,40 +6,26 @@ using namespace std;
 
 int main()
 {
-	int n, m;
-	cin >> n >> m;
-	int b[100];
-	multiset<int>ms;
+	vector<pair<int, int>>v;
+	int n; cin >> n;
 	for (int i = 0; i < n; i++)
 	{
-		int x; cin >> x;
-		ms.insert(x);
+		int start, end;
+		cin >> start;
+		v.push_back({ start, 1 });
+		cin >> end;
+		v.push_back({ end, -1 });
 	}
-	for (int j = 0; j < m; j++)
+	sort(v.begin(), v.end());
+	int res = 0;
+	int max = INT_MIN;
+	for (int i = 0; i < v.size(); i++)
 	{
-		cin >> b[j];
-	}
-	for (int i = 0; i < m; i++)
-	{
-		auto it = ms.lower_bound(b[i]);
-		if (*it == b[i])
+		res = res + v[i].second;
+		if (res > max)
 		{
-			cout << *it << " ";
-			ms.erase(it);
-		}
-		else
-		{
-			if (it == ms.begin())
-			{
-				cout << -1 << " ";
-			}
-			else
-			{
-				it--;
-				cout << *it << " ";
-				ms.erase(it);
-			}
+			max = res;
 		}
 	}
-	return 0;
+	cout << max;
 }
