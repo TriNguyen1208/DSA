@@ -1,40 +1,45 @@
 #include<iostream>
 #include<algorithm>
 #include<vector>
+#include<set>
 using namespace std;
 
 int main()
 {
 	int n, m;
 	cin >> n >> m;
-	int a[100], b[100];
+	int b[100];
+	multiset<int>ms;
 	for (int i = 0; i < n; i++)
 	{
-		cin >> a[i];
+		int x; cin >> x;
+		ms.insert(x);
+	}
+	for (int j = 0; j < m; j++)
+	{
+		cin >> b[j];
 	}
 	for (int i = 0; i < m; i++)
 	{
-		cin >> b[i];
-	}
-	sort(a, a + n);
-	sort(b, b + m);
-	int j = 0;
-	int cnt = 0;
-	for (int i = 0; i < n; i++)
-	{
-		if (abs(a[i] - b[j]) <= 1)
+		auto it = ms.lower_bound(b[i]);
+		if (*it == b[i])
 		{
-			cnt++;
-			j++;
+			cout << *it << " ";
+			ms.erase(it);
 		}
-		else if (abs(a[i] - b[j]) > 1)
+		else
 		{
-			if (a[i] > b[j])
+			if (it == ms.begin())
 			{
-				i--;
-				j++;
+				cout << -1 << " ";
+			}
+			else
+			{
+				it--;
+				cout << *it << " ";
+				ms.erase(it);
 			}
 		}
 	}
-	cout << cnt;
+	return 0;
 }
