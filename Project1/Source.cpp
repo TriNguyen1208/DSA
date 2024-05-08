@@ -5,24 +5,36 @@ using namespace std;
 
 int main()
 {
-	int n, s;
-	cin >> n >> s;
-	vector<pair<int, int>>v;
+	int n, m;
+	cin >> n >> m;
+	int a[100], b[100];
 	for (int i = 0; i < n; i++)
 	{
-		int power_dragon, bonus_score;
-		cin >> power_dragon >> bonus_score;
-		v.push_back({ power_dragon, bonus_score });
+		cin >> a[i];
 	}
-	sort(v.begin(), v.end());
+	for (int i = 0; i < m; i++)
+	{
+		cin >> b[i];
+	}
+	sort(a, a + n);
+	sort(b, b + m);
+	int j = 0;
+	int cnt = 0;
 	for (int i = 0; i < n; i++)
 	{
-		if (s <= v[i].first)
+		if (abs(a[i] - b[j]) <= 1)
 		{
-			cout << "NO";
-			return 0;
+			cnt++;
+			j++;
 		}
-		s = s + v[i].second;
+		else if (abs(a[i] - b[j]) > 1)
+		{
+			if (a[i] > b[j])
+			{
+				i--;
+				j++;
+			}
+		}
 	}
-	cout << "YES";
+	cout << cnt;
 }
