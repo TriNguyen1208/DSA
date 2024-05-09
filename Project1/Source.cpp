@@ -4,28 +4,37 @@
 #include<set>
 using namespace std;
 
-int main()
+bool check(int a[], int n, int t, int time)
 {
-	vector<pair<int, int>>v;
-	int n; cin >> n;
+	int time_res = 0;
 	for (int i = 0; i < n; i++)
 	{
-		int start, end;
-		cin >> start;
-		v.push_back({ start, 1 });
-		cin >> end;
-		v.push_back({ end, -1 });
+		time_res = time_res + (time / a[i]);
 	}
-	sort(v.begin(), v.end());
-	int res = 0;
-	int max = INT_MIN;
-	for (int i = 0; i < v.size(); i++)
+	return time_res >= t;
+}
+int main()
+{
+	int n, t; cin >> n >> t;
+	int a[1000];
+	for (int i = 0; i < n; i++)
 	{
-		res = res + v[i].second;
-		if (res > max)
+		cin >> a[i];
+	}
+	long long left = 0, right = *min_element(a, a + n) * t;
+	long long res = 0;
+	while (left <= right)
+	{
+		long long mid = (left + right) / 2;
+		if (check(a, n, t, mid) == true)
 		{
-			max = res;
+			res = mid;
+			right = mid - 1;
+		}
+		else
+		{
+			left = mid + 1;
 		}
 	}
-	cout << max;
+	cout << res;
 }
