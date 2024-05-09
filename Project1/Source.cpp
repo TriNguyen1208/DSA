@@ -4,36 +4,39 @@
 #include<set>
 using namespace std;
 
-bool check(int a[], int n, int t, int time)
+bool check(int a[1000], int N, int L, long long H)
 {
-	int time_res = 0;
-	for (int i = 0; i < n; i++)
+	long long wooden = 0;
+	for (int i = 0; i < N; i++)
 	{
-		time_res = time_res + (time / a[i]);
+		if (a[i] > H)
+		{
+			wooden = wooden + a[i] - H;
+		}
 	}
-	return time_res >= t;
+	return wooden >= L;
 }
 int main()
 {
-	int n, t; cin >> n >> t;
+	int N, L; cin >> N >> L;
 	int a[1000];
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i < N; i++)
 	{
 		cin >> a[i];
 	}
-	long long left = 0, right = *min_element(a, a + n) * t;
+	long long left = 0, right = *max_element(a, a + N);
 	long long res = 0;
 	while (left <= right)
 	{
-		long long mid = (left + right) / 2;
-		if (check(a, n, t, mid) == true)
+		long long mid = (right + left) / 2;
+		if (check(a, N, L, mid) == true)
 		{
 			res = mid;
-			right = mid - 1;
+			left = mid + 1;
 		}
 		else
 		{
-			left = mid + 1;
+			right = mid - 1;
 		}
 	}
 	cout << res;
