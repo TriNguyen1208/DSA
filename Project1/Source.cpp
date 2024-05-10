@@ -2,63 +2,41 @@
 #include<algorithm>
 #include<vector>
 #include<set>
+#include<iomanip>
 using namespace std;
 
-int sum(int a[], int n)
+bool check(int a[], int n, int k, double maxWire)
 {
 	int res = 0;
 	for (int i = 0; i < n; i++)
 	{
-		res = res + a[i];
+		res = res + (int)a[i] / maxWire;
 	}
-	return res;
-}
-int compare(int a[], int n, int k, int maxSum)
-{
-	int cnt = 0;
-	int sum = 0;
-	for (int i = 0; i < n; i++)
-	{
-		if (sum + a[i] > maxSum)
-		{
-			cnt++;
-			sum = 0;
-		}
-		sum = sum + a[i];
-	}
-	cnt++;
-	if (cnt > k) //lower
-	{
-		return 1;
-	}
-	else//greater
-	{
-		return 0;
-	}
+	return res >= k;
 }
 int main()
-{ 
+{
 	int n, k; cin >> n >> k;
 	int a[1000];
 	for (int i = 0; i < n; i++)
 	{
 		cin >> a[i];
 	}
-	int left = 0, right = sum(a, n);
-	int res = 0;
-	while (left <= right)
+	double left = 0, right = *max_element(a, a + n) * k;
+	double res = 0;
+	for(int i = 0;i < 60;i++)
 	{
-		int mid = (left + right) / 2;
-		int maxSum = 0;
-		if (compare(a, n, k, mid) == 0)
+		double mid = (left + right) / 2;
+		if (check(a, n, k, mid) == true)
 		{
-			right = mid - 1;
 			res = mid;
+			left = mid;
 		}
 		else
 		{
-			left = mid + 1;
+			right = mid;
 		}
 	}
-	cout << res;
+	cout << setprecision(6) << fixed << res;
+	return 0;
 }
