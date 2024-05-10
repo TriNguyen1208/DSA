@@ -4,39 +4,60 @@
 #include<set>
 using namespace std;
 
-bool check(int a[1000], int N, int L, long long H)
+int sum(int a[], int n)
 {
-	long long wooden = 0;
-	for (int i = 0; i < N; i++)
+	int res = 0;
+	for (int i = 0; i < n; i++)
 	{
-		if (a[i] > H)
-		{
-			wooden = wooden + a[i] - H;
-		}
+		res = res + a[i];
 	}
-	return wooden >= L;
+	return res;
+}
+int compare(int a[], int n, int k, int maxSum)
+{
+	int cnt = 0;
+	int sum = 0;
+	for (int i = 0; i < n; i++)
+	{
+		if (sum + a[i] > maxSum)
+		{
+			cnt++;
+			sum = 0;
+		}
+		sum = sum + a[i];
+	}
+	cnt++;
+	if (cnt > k) //lower
+	{
+		return 1;
+	}
+	else//greater
+	{
+		return 0;
+	}
 }
 int main()
-{
-	int N, L; cin >> N >> L;
+{ 
+	int n, k; cin >> n >> k;
 	int a[1000];
-	for (int i = 0; i < N; i++)
+	for (int i = 0; i < n; i++)
 	{
 		cin >> a[i];
 	}
-	long long left = 0, right = *max_element(a, a + N);
-	long long res = 0;
+	int left = 0, right = sum(a, n);
+	int res = 0;
 	while (left <= right)
 	{
-		long long mid = (right + left) / 2;
-		if (check(a, N, L, mid) == true)
+		int mid = (left + right) / 2;
+		int maxSum = 0;
+		if (compare(a, n, k, mid) == 0)
 		{
+			right = mid - 1;
 			res = mid;
-			left = mid + 1;
 		}
 		else
 		{
-			right = mid - 1;
+			left = mid + 1;
 		}
 	}
 	cout << res;
