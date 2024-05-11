@@ -1,13 +1,13 @@
 #include<iostream>
 using namespace std;
 
-void Try(int x[100], int mask[100], int n, int start = 0)
+void Try(int a[], int mask[], int n, int k, int start = 0)
 {
-	if (start == n)
+	if (start == k)
 	{
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i < k; i++)
 		{
-			cout << x[i];
+			cout << a[i];
 		}
 		cout << endl;
 		return;
@@ -17,8 +17,8 @@ void Try(int x[100], int mask[100], int n, int start = 0)
 		if (mask[i] == 0)
 		{
 			mask[i] = 1;
-			x[start] = i;
-			Try(x, mask, n, start + 1);
+			a[start] = i;
+			Try(a, mask, n, k, start + 1);
 			mask[i] = 0;
 		}
 	}
@@ -27,5 +27,5 @@ int main()
 {
 	int x[100] = { 0 };
 	int mask[100] = { 0 };
-	Try(x, mask, 5);
+	Try(x, mask, 5, 3);
 }
