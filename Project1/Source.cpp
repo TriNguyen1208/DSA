@@ -1,68 +1,93 @@
 #include<iostream>
 using namespace std;
 
-int a[100];
-int mask[100];
-bool IsPrime(int x)
+bool IsCorrect(int mask[][100], int indexX, int indexY)
 {
-	if (x < 2)
+	//Check horizontal
+	for (int i = 0; i < 8; i++)
 	{
-		return false;
-	}
-	for (int i = 2; i <= sqrt(x); i++)
-	{
-		if (x % i == 0)
+		if (mask[indexX][i] == 1)
 		{
 			return false;
 		}
 	}
-	return true;
-}
-bool IsAscending(int a[], int n)
-{
-	for (int i = 0; i < n - 1; i++)
+	//Check vertical
+	for (int i = 0; i < 8; i++)
 	{
-		if (a[i + 1] < a[i])
+		if (mask[i][indexY] == 1)
 		{
 			return false;
 		}
 	}
+	//Check main diagonal
+	int i = indexX, j = indexY;
+	while (i < 8 && j < 8)
+	{
+		if (mask[i][j] == 1)
+		{
+			return false;
+		}
+		i++, j++;
+	}
+	i = indexX, j = indexY;
+	while (i >= 0 && j >= 0)
+	{
+		if (mask[i][j] == 1)
+		{
+			return false;
+		}
+		i--, j--;
+	}
+	//Check secondary diagonal
+	i = indexX, j = indexY;
+	while (i >= 0 && j <= 8)
+	{
+		if (mask[i][j] == 1)
+		{
+			return false;
+		}
+		i--, j++;
+	}
+	i = indexX, j = indexY;
+	while (j >= 0 && i <= 8)
+	{
+		if (mask[i][j] == 1)
+		{
+			return false;
+		}
+		j--, i++;
+	}
 	return true;
 }
-void BackTrack(int n, int p, int s, int& solan, int sum = 0, int cnt = 0)
+void backtrack(int a[][100], int mask[][100], int& Max, int sum = 0, int cnt = 0, int indexX = 0)
 {
-	if (cnt == n && sum == s)
+	if (cnt == 8)
 	{
-		if (IsAscending(a, n) == true)
-		{
-			solan++;
-			for (int i = 0; i < n; i++)
-			{
-				cout << a[i] << " ";
-			}
-			cout << endl;
-		}
+		Max = max(Max, sum);
 		return;
 	}
-	for (int i = p + 1; i < s; i++)
+	for (int i = 0; i < 8; i++)//run col
 	{
-		if (IsPrime(i) && sum + i <= s && mask[i] == 0)
+		if (mask[indexX][i] == 0 && IsCorrect(mask, indexX, i) == true)
 		{
-			a[cnt] = i;
-			mask[i] = 1;
-			BackTrack(n, p, s, solan, sum + i, cnt + 1);
-			mask[i] = 0;
-			a[cnt] = 0;
+			mask[indexX][i] = 1;
+			backtrack(a, mask, Max, sum + a[indexX][i], cnt + 1, indexX + 1);
+			mask[indexX][i] = 0;
 		}
 	}
 }
 int main()
 {
-	int t; cin >> t;
-	while (t--)
+	int a[100][100];
+	for (int i = 0; i < 8; i++)
 	{
-		int n, p, s; cin >> n >> p >> s;
-		int solan = 0;
-		BackTrack(n, p, s, solan);
+		for (int j = 0; j < 8; j++)
+		{
+			cin >> a[i][j];
+		}
 	}
+	int mask[100][100] = { 0 };
+	int max = 0;
+	backtrack(a, mask, max);
+	cout << max;
 }
