@@ -1,93 +1,45 @@
 #include<iostream>
 using namespace std;
 
-bool IsCorrect(int mask[][100], int indexX, int indexY)
+bool IsDescending(int a[], int n)
 {
-	//Check horizontal
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < n - 1; i++)
 	{
-		if (mask[indexX][i] == 1)
+		if (a[i + 1] > a[i])
 		{
 			return false;
 		}
-	}
-	//Check vertical
-	for (int i = 0; i < 8; i++)
-	{
-		if (mask[i][indexY] == 1)
-		{
-			return false;
-		}
-	}
-	//Check main diagonal
-	int i = indexX, j = indexY;
-	while (i < 8 && j < 8)
-	{
-		if (mask[i][j] == 1)
-		{
-			return false;
-		}
-		i++, j++;
-	}
-	i = indexX, j = indexY;
-	while (i >= 0 && j >= 0)
-	{
-		if (mask[i][j] == 1)
-		{
-			return false;
-		}
-		i--, j--;
-	}
-	//Check secondary diagonal
-	i = indexX, j = indexY;
-	while (i >= 0 && j <= 8)
-	{
-		if (mask[i][j] == 1)
-		{
-			return false;
-		}
-		i--, j++;
-	}
-	i = indexX, j = indexY;
-	while (j >= 0 && i <= 8)
-	{
-		if (mask[i][j] == 1)
-		{
-			return false;
-		}
-		j--, i++;
 	}
 	return true;
 }
-void backtrack(int a[][100], int mask[][100], int& Max, int sum = 0, int cnt = 0, int indexX = 0)
+void backtrack(int a[], int n, int sum = 0, int cnt = 0)
 {
-	if (cnt == 8)
+	if (sum == n)
 	{
-		Max = max(Max, sum);
+		if (IsDescending(a, cnt) == true)
+		{
+			for (int i = 0; i < cnt; i++)
+			{
+				cout << a[i] << " ";
+			}
+			cout << endl;
+		}
 		return;
 	}
-	for (int i = 0; i < 8; i++)//run col
+	for (int i = 5; i > 0; i--)
 	{
-		if (mask[indexX][i] == 0 && IsCorrect(mask, indexX, i) == true)
+		if (sum + i <= n)
 		{
-			mask[indexX][i] = 1;
-			backtrack(a, mask, Max, sum + a[indexX][i], cnt + 1, indexX + 1);
-			mask[indexX][i] = 0;
+			a[cnt] = i;
+			backtrack(a, n, sum + i, cnt + 1);
+			a[cnt] = 0;
 		}
 	}
 }
 int main()
 {
-	int a[100][100];
-	for (int i = 0; i < 8; i++)
-	{
-		for (int j = 0; j < 8; j++)
-		{
-			cin >> a[i][j];
-		}
-	}
-	int mask[100][100] = { 0 };
-	int max = 0;
-	backtrack(a, mask, max);
-	cout << max;
+	int n;
+	cin >> n;
+	int a[100];
+	backtrack(a, n);
 }
