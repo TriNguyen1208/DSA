@@ -1,86 +1,63 @@
 #include<iostream>
-#include<string>
+#include<stack>
 using namespace std;
 
-void BackTrack(string dic[], char A[][10], int K, int M, int N, int word, int indexX, int indexY, int cnt = 1)
+bool check(string s)
 {
-	if (cnt == dic[word].length())
+	stack<char>st;
+	for (char x : s)
 	{
-		cout << dic[word] << " ";
-		return;
-	}
-	//Cheo Trai
-	if (indexX - 1 >= 0 && indexY - 1 >= 0 && A[indexX - 1][indexY - 1] == dic[word][cnt])
-	{
-		BackTrack(dic, A, K, M, N, word, indexX - 1, indexY - 1, cnt + 1);
-	}
-	//Cheo Phai
-	if (indexX - 1 >= 0 && indexY + 1 < N && A[indexX - 1][indexY + 1] == dic[word][cnt])
-	{
-		BackTrack(dic, A, K, M, N, word, indexX - 1, indexY + 1, cnt + 1);
-	}
-	//Cheo Trai Xuong
-	if (indexX + 1 < M && indexY - 1 >= 0 && A[indexX + 1][indexY - 1] == dic[word][cnt])
-	{
-		BackTrack(dic, A, K, M, N, word, indexX + 1, indexY - 1, cnt + 1);
-	}
-	//Cheo Phai Xuong
-	if (indexX + 1 < M && indexY + 1 < N && A[indexX + 1][indexY + 1] == dic[word][cnt])
-	{
-		BackTrack(dic, A, K, M, N, word, indexX + 1, indexY + 1, cnt + 1);
-	}
-	// Tren
-	if (indexX - 1 >= 0 && A[indexX - 1][indexY] == dic[word][cnt])
-	{
-		BackTrack(dic, A, K, M, N, word, indexX - 1, indexY, cnt + 1);
-	}
-	//Xuong
-	if (indexX + 1 < M && A[indexX + 1][indexY] == dic[word][cnt])
-	{
-		BackTrack(dic, A, K, M, N, word, indexX + 1, indexY, cnt + 1);
-	}
-	//Phai
-	if (indexY - 1 >= 0 && A[indexX][indexY - 1] == dic[word][cnt])
-	{
-		BackTrack(dic, A, K, M, N, word, indexX, indexY - 1, cnt + 1);
-	}
-	//Trai
-	if (indexY + 1 < N && A[indexX][indexY + 1] == dic[word][cnt])
-	{
-		BackTrack(dic, A, K, M, N, word, indexX, indexY + 1, cnt + 1);
-	}
-}
-void Search(string dic[], char A[][10], int K, int M, int N, int word)
-{
-	for (int i = 0; i < M; i++)
-	{
-		for (int j = 0; j < N; j++)
+		if (x == '[' || x == '{' || x == '(')
 		{
-			if (A[i][j] == dic[word][0])
+			st.push(x);
+		}
+		else
+		{
+			if (st.empty())
 			{
-				BackTrack(dic, A, K, M, N, word, i, j);
+				return false;
+			}
+			char y = st.top();
+			st.pop();
+			if ((x == ')' && y != '(') || (x == '}' && y != '{') || (x == ']' && y != '['))
+			{
+				return false;
 			}
 		}
+	}
+	if (st.empty())
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+void backtrack(string s, string tmp, int n, int cnt = 0)
+{
+	if (cnt == n)
+	{
+		if (check(tmp) == true)
+		{
+			for (int i = 0; i < n; i++)
+			{
+				cout << tmp[i];
+			}
+			cout << " ";
+		}
+		return;
+	}
+	for (int i = 0; i < s.size(); i++)
+	{
+		tmp = tmp + s[i];
+		backtrack(s, tmp, n, cnt + 1);
+		tmp.pop_back();
 	}
 }
 int main()
 {
-	int K, M, N; cin >> K >> M >> N;
-	string dic[100];
-	for (int i = 0; i < K; i++)
-	{
-		cin >> dic[i];
-	}
-	char A[10][10];
-	for (int i = 0; i < M; i++)
-	{
-		for (int j = 0; j < N; j++)
-		{
-			cin >> A[i][j];
-		}
-	}
-	for (int i = 0; i < K; i++)
-	{
-		Search(dic, A, K, M, N, i);
-	}
+	string s = "()[]{}";
+	string tmp = "";
+	backtrack(s, tmp, 6);
 }
