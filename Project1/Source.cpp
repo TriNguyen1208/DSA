@@ -1,26 +1,37 @@
 #include<iostream>
-#include<stack>
-#include<queue>
+#include<algorithm>
+#include<vector>
 using namespace std;
 
 int main()
 {
-	priority_queue<int>qe;
-	int n; cin >> n;
+	int n, k;
+	cin >> n >> k;
+	vector<int>v;
+	int luck = 0;
 	for (int i = 0; i < n; i++)
 	{
-		int x; cin >> x;
-		qe.push(x);
+		int l, t; cin >> l >> t;
+		if (t == 0)
+		{
+			luck = luck + l;
+		}
+		else
+		{
+			v.push_back(l);
+		}
 	}
-	int cost = 0;
-	while (qe.size() != 1)
+	sort(v.begin(), v.end(), greater<int>());
+	for (int i = 0; i < v.size(); i++)
 	{
-		int x = qe.top();
-		qe.pop();
-		int y = qe.top();
-		qe.pop();
-		cost = cost + (x + y);
-		qe.push(x + y);
+		if (i < k)
+		{
+			luck = luck + v[i];
+		}
+		else
+		{
+			luck = luck - v[i];
+		}
 	}
-	cout << cost;
+	cout << luck;
 }
