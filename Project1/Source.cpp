@@ -1,63 +1,26 @@
 #include<iostream>
 #include<stack>
+#include<queue>
 using namespace std;
 
-bool check(string s)
-{
-	stack<char>st;
-	for (char x : s)
-	{
-		if (x == '[' || x == '{' || x == '(')
-		{
-			st.push(x);
-		}
-		else
-		{
-			if (st.empty())
-			{
-				return false;
-			}
-			char y = st.top();
-			st.pop();
-			if ((x == ')' && y != '(') || (x == '}' && y != '{') || (x == ']' && y != '['))
-			{
-				return false;
-			}
-		}
-	}
-	if (st.empty())
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-void backtrack(string s, string tmp, int n, int cnt = 0)
-{
-	if (cnt == n)
-	{
-		if (check(tmp) == true)
-		{
-			for (int i = 0; i < n; i++)
-			{
-				cout << tmp[i];
-			}
-			cout << " ";
-		}
-		return;
-	}
-	for (int i = 0; i < s.size(); i++)
-	{
-		tmp = tmp + s[i];
-		backtrack(s, tmp, n, cnt + 1);
-		tmp.pop_back();
-	}
-}
 int main()
 {
-	string s = "()[]{}";
-	string tmp = "";
-	backtrack(s, tmp, 6);
+	priority_queue<int>qe;
+	int n; cin >> n;
+	for (int i = 0; i < n; i++)
+	{
+		int x; cin >> x;
+		qe.push(x);
+	}
+	int cost = 0;
+	while (qe.size() != 1)
+	{
+		int x = qe.top();
+		qe.pop();
+		int y = qe.top();
+		qe.pop();
+		cost = cost + (x + y);
+		qe.push(x + y);
+	}
+	cout << cost;
 }
