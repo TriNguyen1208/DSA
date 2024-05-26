@@ -1,64 +1,38 @@
 #include<iostream>
-#include<algorithm>
 using namespace std;
 
-bool IsTriangle(int x, int y, int z)
+long long f[100];
+void initFibo()
 {
-	if (x + y > z && x + z > y && y + z > x)
+	f[1] = 1; f[2] = 1;
+	for (int i = 3; i < 100; i++)
 	{
-		return true;
+		f[i] = f[i - 1] + f[i - 2];
 	}
-	return false;
 }
-void greedyAlgorithm(int a[], int n)
+char fiboString(int n, long long k)
 {
-	for (int i = n - 1; i >= 2; i--)
+	if (n == 1)
 	{
-		if (IsTriangle(a[i - 2], a[i - 1], a[i]))
-		{
-			cout << a[i - 2] << " " << a[i - 1] << " " << a[i];
-			return;
-		}
+		return 'A';
 	}
-	cout << -1;
-}
-int luu[3];
-void backtrackAlgorithm(int a[], int save[], int n, int& Max, int cnt = 0, int start = 0)
-{
-	if (cnt == 3)
+	if (n == 2)
 	{
-		if (IsTriangle(save[0], save[1], save[2]))
-		{
-			Max = max(Max, save[0] + save[1] + save[2]);
-			if (save[0] + save[1] + save[2] == Max)
-			{
-				for (int i = 0; i < 3; i++)
-				{
-					luu[i] = save[i];
-				}
-			}
-		}
-		return;
+		return 'B';
 	}
-	for (int i = start; i < n; i++)
+	if (k <= f[n - 2])
 	{
-		save[cnt] = a[i];
-		backtrackAlgorithm(a, save, n, Max, cnt + 1, i + 1);
+		return fiboString(n - 2, k);
+	}
+	else if (k > f[n - 2])
+	{
+		return fiboString(n - 1, k - f[n - 2]);
 	}
 }
 int main()
 {
-	int a[100], n;
-	cin >> n;
-	for (int i = 0; i < n; i++)
-	{
-		cin >> a[i];
-	}
-	int save[100];
-	int Max = INT_MIN;
-	backtrackAlgorithm(a, save, n, Max);
-	for (int i = 0; i < n; i++)
-	{
-		cout << luu[i] << " ";
-	}
+	initFibo();
+	int n; long long k;
+	cin >> n >> k;
+	cout << fiboString(n, k);
 }
